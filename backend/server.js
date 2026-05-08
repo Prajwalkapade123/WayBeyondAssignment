@@ -9,6 +9,12 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// Request logging middleware
+app.use((req, res, next) => {
+  console.log(`${req.method} ${req.url}`, req.body);
+  next();
+});
+
 // Routes
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/notes', require('./routes/notes'));

@@ -9,9 +9,16 @@ const User = require('../models/User');
 router.post('/register', async (req, res) => {
   const { username, password } = req.body;
 
+  if (!username) {
+    console.log('Missing username');
+    return res.status(400).json({ msg: 'Please enter a username' });
+  }
+
   try {
+    console.log('Registering user:', username);
     let user = await User.findOne({ username });
     if (user) {
+      console.log('User already exists');
       return res.status(400).json({ msg: 'User already exists' });
     }
 
@@ -44,8 +51,10 @@ router.post('/login', async (req, res) => {
   const { username, password } = req.body;
 
   try {
+    console.log('Login attempt:', username);
     let user = await User.findOne({ username });
     if (!user) {
+      console.log('User not found');
       return res.status(400).json({ msg: 'Invalid Credentials' });
     }
 
